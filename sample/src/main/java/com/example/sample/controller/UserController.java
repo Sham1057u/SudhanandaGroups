@@ -3,8 +3,7 @@ package com.example.sample.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,8 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.sample.DTO.UserDTO;
 import com.example.sample.Entities.User;
 import com.example.sample.Service.UserService;
+
+import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/api")
@@ -34,9 +37,13 @@ public class UserController {
 	
  }
     @PostMapping("/users")
-    public ResponseEntity<String> addUser(@RequestBody User obj) {
-        service.saveUser(obj);
-        return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully.");
+    public String addUser(@Valid  @RequestBody UserDTO obj) {
+        if(service.saveUser(obj)) {
+        return "User created successfully.";
+        }
+        else {
+        	return "user already present";
+        }
     }
     @DeleteMapping("/users/{user_id}")
     public String deleteUser(@PathVariable("user_id") int id){
@@ -60,8 +67,18 @@ public class UserController {
     public User findByname(@PathVariable("username") String username){
     	return service.searchByName(username);
     }
-    @GetMapping("/findbystatus/{status}")
-    public User findBystatus(@PathVariable("status") String status) {
-    	return service.searchByStatus(status);
+   
+    
+    @Validated
+    @PostMapping("test/dto")
+    public String saveEntity(@Valid @RequestBody UserDTO user) {
+    	
+    	return "validation page";
+    	
     }
+    
+    
+    
+    
+    
 }

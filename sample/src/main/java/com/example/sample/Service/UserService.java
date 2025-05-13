@@ -5,7 +5,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.sample.DTO.UserDTO;
 import com.example.sample.Entities.User;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import com.example.sample.repository.UserRepository;
 
@@ -18,8 +21,21 @@ public class UserService {
 		return repo.findById(id).orElseThrow(()->new RuntimeException("user with given credential not present"));
 	}
 
-	public void saveUser(User obj) {
+	public boolean saveUser(UserDTO object) {
+		User obj=new User();
+		obj.setName(object.getName());
+		obj.setEmail(object.getEmail());
+		obj.setStatus(object.getStatus());
+		obj.setUser_id(object.getUser_id());
+		obj.setCreatedAt(LocalDateTime.now());
+		
+		if(repo.findById(obj.getUser_id()).isPresent()) {
+			return false;
+		}
+		else {
 		repo.save(obj);
+		return true;
+		}
 		
 	}
 
@@ -49,6 +65,7 @@ public class UserService {
 			update.setEmail(user.getEmail());
 			update.setName(user.getName());
 			update.setStatus(user.getStatus());
+		
 			
 		}
 		repo.save(update);
@@ -63,9 +80,7 @@ public class UserService {
 		 
 	}
 
-	public User searchByStatus(String status) {
-		return repo.findByStatus(status).orElseThrow(()->new RuntimeException("user not found"));
-	}
+	
 
 
 }

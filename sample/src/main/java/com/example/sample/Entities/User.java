@@ -6,22 +6,24 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name="Users")
 public class User {
     @Id
-	public int user_id;
+	private int user_id;
     
     @Column
-    public String name;
+    private String name;
     
     @Column
-    public String email;
+    private String email;
     
     @Column
-    public String status;
+    private String status;
     
+  
     @Column(nullable = false, updatable = false) 
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -65,5 +67,9 @@ public LocalDateTime getCreatedAt() {
 }
 public void setCreatedAt(LocalDateTime createdAt) {
 	this.createdAt = createdAt;
+	
 }
+
+
+
 }

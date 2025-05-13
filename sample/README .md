@@ -38,5 +38,7 @@ PUT				/api/users/{user_id}			Update user details by ID
 GET			 /api/findbyusername/{username}		Get user details by username
 GET				/api/findbystatus/{status}		Get user details by status
 
+Also, implemented the validation with the help of @Valid at controller and @NotBlank and @Email in the UserDTO class so that if a request came with invalid data the controller reach the GlobalException  class and sends the error message to the user.
+pushed the project to the git with url:https://github.com/Sham1057u/SudhanandaGroups
 
 
